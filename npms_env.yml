@@ -1,0 +1,56 @@
+# conda env create -f npms_env.yml
+# conda env update -f npms_env.yml
+
+# export TORCH_CUDA_ARCH_LIST="6.1;7.5;8.6"
+
+name: npms
+channels:
+  - pytorch
+  - pytorch3d
+  - defaults
+  - pandas
+  - open3d-admin
+  - fvcore
+  - anaconda
+  - conda-forge
+dependencies:
+  - python>=3.8
+  - cython
+  - trimesh
+  - cudatoolkit=11.0
+  - pytorch
+  - torchvision
+  - tensorflow
+  - tensorboard
+  - tensorboardx
+  - scipy
+  - imageio
+  - six
+  - pyglet
+  - pyopengl
+  - pytorch3d
+  - shapely
+  - kornia
+  - joblib
+  - absl-py
+  - pandas
+  - pykdtree
+  - numpy
+  - pybind11
+  - open3d
+  - pip
+  - tqdm
+  - opencv
+  - scikit-learn
+  - scikit-image
+  
+  - pip:
+    - freetype-py
+    - pymcubes==0.1.0
+    - pyrender
+    - ipython
+    - pillow
+    - git+https://github.com/mmatl/pyopengl.git
+    - smplx==0.1.24
+    - chumpy
+

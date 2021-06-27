@@ -1,0 +1,247 @@
+[
+    {
+        "dataset": "cape",
+        "identity_id": 0,
+        "identity_name": "00096_jerseyshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 1,
+        "identity_name": "00096_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 2,
+        "identity_name": "00096_shirtlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 3,
+        "identity_name": "00096_shirtshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 4,
+        "identity_name": "00096_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 5,
+        "identity_name": "00096_shortshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 6,
+        "identity_name": "00122_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 7,
+        "identity_name": "00122_shortshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 8,
+        "identity_name": "00127_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 9,
+        "identity_name": "00134_longlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 10,
+        "identity_name": "00134_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 11,
+        "identity_name": "00145_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 12,
+        "identity_name": "00159_longlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 13,
+        "identity_name": "00159_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 14,
+        "identity_name": "00159_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 15,
+        "identity_name": "00159_shortshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 16,
+        "identity_name": "00215_jerseyshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 17,
+        "identity_name": "00215_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 18,
+        "identity_name": "00215_poloshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 19,
+        "identity_name": "00215_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 20,
+        "identity_name": "02474_longlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 21,
+        "identity_name": "02474_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 22,
+        "identity_name": "03284_longlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 23,
+        "identity_name": "03284_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 24,
+        "identity_name": "03284_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 25,
+        "identity_name": "03284_shortshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 26,
+        "identity_name": "03331_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 27,
+        "identity_name": "03331_shortshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 28,
+        "identity_name": "03375_blazerlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 29,
+        "identity_name": "03375_longlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 30,
+        "identity_name": "03375_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 31,
+        "identity_name": "03375_shortshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 32,
+        "identity_name": "03383_shortlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 33,
+        "identity_name": "03394_longlong",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    },
+    {
+        "dataset": "cape",
+        "identity_id": 34,
+        "identity_name": "03394_longshort",
+        "animation_name": "a_t_pose",
+        "sample_id": "000000"
+    }
+]
