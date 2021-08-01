@@ -227,10 +227,6 @@ class SDFDataset(Dataset):
         data_ref_dict = self._subsample(data_ref_dict, subsample_flow_indices_list, is_tpose=True)
         data_dict     = self._subsample(data_dict,     subsample_flow_indices_list, is_tpose=False)
 
-        # print(data_ref_dict['path'])
-        # print(data_dict['path'])
-        # print()
-
         return {
             'ref': data_ref_dict,
             'cur': data_dict,
@@ -281,8 +277,6 @@ def prepare_samples(sample_data, N_target_dict):
         surface_sdf = np.zeros((surface_sdf_samples.shape[0], 1), dtype=np.float32)
         surface_sdf_samples = np.concatenate((surface_sdf_samples, surface_sdf), axis=1)
 
-    # print(surface_sdf_samples.shape)
-
     ##################################################################################################
     # Near Surface Sampled
     ##################################################################################################
@@ -297,6 +291,7 @@ def prepare_samples(sample_data, N_target_dict):
         nss_sdf_samples = nss_sdf_samples[nss_idxs, :]
         assert nss_sdf_samples.shape[1] == 4
 
+    # If you want to visualize:
     # print(nss_sdf_samples.shape)
     # import open3d as o3d
     # pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(nss_sdf_samples[:, :3]))
@@ -317,6 +312,7 @@ def prepare_samples(sample_data, N_target_dict):
         uniform_sdf_samples = uniform_sdf_samples[uniform_idxs, :]
         assert uniform_sdf_samples.shape[1] == 4
 
+    # If you want to visualize:
     # print(uniform_sdf_samples.shape)
     # pcd2 = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(uniform_sdf_samples[:, :3]))
     # pcd2.paint_uniform_color([0, 1, 0])
@@ -330,119 +326,3 @@ def prepare_samples(sample_data, N_target_dict):
     all_sdf_samples = np.concatenate((nss_sdf_samples, surface_sdf_samples, uniform_sdf_samples), axis=0)
 
     return all_sdf_samples
-
-
-# class VoxelsDataset(Dataset):
-
-#     def __init__(
-#         self, 
-#         data_dir='data', 
-#         labels_json='labels.json',
-#         batch_size=64, 
-#         num_workers=12,
-#         res=64,
-#         cache_data=True,
-#         **kwargs
-#     ):
-
-#         self.res = res
-
-#         self.data_dir = data_dir
-#         self.labels_json = labels_json
-#         self.labels_tpose_json = os.path.join(os.path.dirname(labels_json), "labels_tpose.json")
-
-#         self.cache_data = cache_data
-#         self.cache = []
-#         self.cache_tpose = []
-
-#         # Load labels
-#         self._load()
-
-#         self.batch_size = batch_size
-#         self.num_workers = num_workers
-
-#         # Preload data
-#         if self.cache_data:
-#             print("Preloading cached data ...")
-
-#             for index in tqdm(range(len(self.labels))):
-#                 data = self.labels[index]
-#                 data_dict = self._load_sample(data)
-#                 self.cache.append(data_dict)
-
-#             # T-Poses
-#             for index in range(len(self.labels_tpose)):
-#                 data = self.labels_tpose[index]
-#                 data_dict = self._load_sample(data)
-#                 self.cache_tpose.append(data_dict)
-
-#     def _load(self):
-#         with open(self.labels_json) as f:
-#             self.labels = json.loads(f.read())
-
-#         with open(self.labels_tpose_json) as f:
-#             self.labels_tpose = json.loads(f.read())
-        
-#         self.num_identities = len(self.labels_tpose)
-
-#     def __len__(self):
-#         return len(self.labels)
-
-#     def get_num_identities(self):
-#         return self.num_identities
-
-#     def _load_sample(self, data):
-#         shape_path = os.path.join(self.data_dir, data['identity_name'], data['animation_name'], data['sample_id'])
-
-#         # Inputs
-#         voxel_path = shape_path + f'/partial_views/voxelized_view0_{self.res}res.npz'
-#         occupancies = np.unpackbits(np.load(voxel_path)['compressed_occupancies'])
-#         inputs = np.reshape(occupancies, (self.res,)*3)
-
-#         return {
-#             'inputs':      np.array(inputs, dtype=np.float32), 
-#             'path':        shape_path,
-#             'identity_id': data['identity_id']
-#         }
-
-#     def _get_identity_id(self, d):
-#         identity_id = d['identity_id']
-#         assert identity_id < self.num_identities, f"Identity {identity_id} is not defined in labels_tpose.json"
-#         return identity_id
-
-#     def __getitem__(self, idx):
-
-#         if self.cache_data:
-#             data_dict = self.cache[idx]
-
-#         else:
-#             data = self.labels[idx]
-#             # Load samples
-#             data_dict = self._load_sample(data)
-            
-#         # print(data_ref_dict['path'])
-#         # print(data_dict['path'])
-#         # print()
-
-#         return {
-#             'data': data_dict,
-#             'idx': idx,
-#             'identity_id': data_dict['identity_id'],
-#         }
-
-#     def get_loader(self, shuffle=True):
-
-#         assert self.batch_size <= len(self), f"batch size ({self.batch_size}) > len dataset ({len(self)})" 
-
-#         return torch.utils.data.DataLoader(
-#             self, 
-#             batch_size=self.batch_size, 
-#             num_workers=self.num_workers, 
-#             shuffle=shuffle,
-#             worker_init_fn=self.worker_init_fn
-#         )
-
-#     def worker_init_fn(self, worker_id):
-#         random_data = os.urandom(4)
-#         base_seed = int.from_bytes(random_data, byteorder="big")
-#         np.random.seed(base_seed + worker_id)

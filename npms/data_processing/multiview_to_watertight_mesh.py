@@ -326,13 +326,6 @@ if __name__ == "__main__":
     print(f"Using {n_jobs} ...")
     print()
 
-    # character_names = [
-    #     'ninja',
-    #     # 'olivia',
-    #     # 'racer',
-    #     # 'crypto',
-    #     # 'alien'
-    # ]
     character_names = cfg.identities + cfg.identities_augmented
 
     dataset_type = "datasets_multi"

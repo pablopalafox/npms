@@ -193,16 +193,16 @@ test_animations_cape_by_identity = {
 ##########################################################
 test_animations_dfaust_by_identity = {
     "50021": [
-        # "chicken_wings",
-        # "knees",
-        # "one_leg_jump",
-        # "punching",
-        # "shake_arms",
-        # "shake_shoulders",
-        # "hips",
-        # "light_hopping_stiff",
-        # "one_leg_loose",
-        # "running_on_spot",
+        "chicken_wings",
+        "knees",
+        "one_leg_jump",
+        "punching",
+        "shake_arms",
+        "shake_shoulders",
+        "hips",
+        "light_hopping_stiff",
+        "one_leg_loose",
+        "running_on_spot",
         "shake_hips",
     ],
 }

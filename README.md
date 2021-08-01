@@ -1,12 +1,15 @@
 # NPMs: Neural Parametric Models
+
+### [Project Page](https://pablopalafox.github.io/npms/) | [Paper](https://pablopalafox.github.io/npms/palafox2021npms.pdf) | [ArXiv](https://arxiv.org/abs/2104.00702) | [Video](https://youtu.be/muZXXgkkMPY)
+<br />
+
 > NPMs: Neural Parametric Models for 3D Deformable Shapes <br />
 > [Pablo Palafox](https://pablopalafox.github.io/), [Aljaz Bozic](https://aljazbozic.github.io/), [Justus Thies](https://justusthies.github.io/), [Matthias Niessner](https://www.niessnerlab.org/members/matthias_niessner/profile.html), [Angela Dai](https://www.3dunderstanding.org/team.html)
 
-![Teaser](resources/teaser.gif)
+<p align="center">
+    <img width="100%" src="resources/teaser.gif"/>
+</p>
 
-[Paper](https://pablopalafox.github.io/npms/palafox2021npms.pdf) - [Project Website](https://pablopalafox.github.io/npms/) - [Arxiv](https://arxiv.org/abs/2104.00702) - [Video](https://youtu.be/muZXXgkkMPY)
-
-THIS REPO IS STILL UNDER CONSTRUCTION! Please do report any issue you might encounter.
 
 #### Citation
     @article{palafox2021npms
@@ -19,9 +22,10 @@ THIS REPO IS STILL UNDER CONSTRUCTION! Please do report any issue you might enco
 
 ## Install
 
+
 You can either pull our docker image, build it yourself with the provided [Dockerfile](Dockerfile) or build the project from source.
 
-#### Pull Docker Image (needs to be updated, since I changed the chamfer distance module we use)
+#### Pull Docker Image
 ```
 docker pull ppalafox/npms:latest
 ```
@@ -39,11 +43,13 @@ Run the following from within the root of this project (where [Dockerfile](Docke
 docker build . -t npms
 ```
 
-You can now run an interactive container of the image you just built (before that, navigate to [npms](npsm)):
+You can now run an interactive container of the image you just built (before that, navigate to [npms](npms)):
 ```
 cd npms
 docker run --ipc=host -it --name npms --gpus=all -v $PWD:/app -v /cluster:/cluster npms:latest bash
 ```
+
+Of course, you'll have to specify you're own paths to the volumes you'd like to mount using the `-v` flag.
 
 
 #### Build from source
@@ -58,36 +64,28 @@ conda activate npms
 ```
 
 ##### Other dependencies
-We need some other dependencies. Starting from the root folder of this project:
+We need some other dependencies. Starting from the root folder of this project, we'll do the following...
 
-- Let's start by cloning [Eigen](https://gitlab.com/libeigen/eigen.git):
+<!-- - Let's start by cloning [Eigen](https://gitlab.com/libeigen/eigen.git):
 ```
 cd external
 git clone https://gitlab.com/libeigen/eigen.git
-```
+``` -->
 
-- [PyMarchingCubes](https://github.com/JustusThies/PyMarchingCubes):
-```
-cd PyMarchingCubes
-python setup.py install
-cd ..
-```
-
-- Let's install [ChamferDistancePytorch](https://github.com/ThibaultGROUEIX/ChamferDistancePytorch.git). Since it uses JIT compilation, we don't need to do anything else other than cloning it:
+<!-- - Let's install [ChamferDistancePytorch](https://github.com/ThibaultGROUEIX/ChamferDistancePytorch.git). Since it uses JIT compilation, we don't need to do anything else other than cloning it:
 ```
 git clone https://github.com/ThibaultGROUEIX/ChamferDistancePytorch.git
 cd ..
-```
+``` -->
 
-- Also compile the [csrc]('csrc') folder: 
+- Compile the [csrc]('csrc') folder: 
 ```
 cd csrc 
 python setup.py install
 cd ..
 ```
 
-
-- We need some libraries from [IFNet](https://github.com/jchibane/if-net). In particular, we need `libmesh` and `libvoxelize` from that repo. We actually have placed them already within [external](external). (Check the corresponding [LICENSE](external/libmesh/LICENSE)). To build these, proceed as follows:
+- We need some libraries from [IFNet](https://github.com/jchibane/if-net). In particular, we need `libmesh` and `libvoxelize` from that repo. They are already placed within [external](external). (Check the corresponding [LICENSE](external/libmesh/LICENSE)). To build these, proceed as follows:
 
 ```
 cd libmesh/
@@ -143,7 +141,7 @@ cd npms/body_model
 mkdir smpl
 ```
 
-And place the `.pkl` files you just downloaded within `npms/body_model/smpl`. Now change their names, such that you have something like: 
+And place the `.pkl` files you just downloaded under `npms/body_model/smpl`. Now change their names, such that you have something like: 
 
 body_models<br/>
 │── smpl<br/>
@@ -168,21 +166,21 @@ Then, we normalize the preprocessed dataset, such that the meshes reside within 
 python normalize_dataset.py
 ```
 
-At this point, we can generate training samples for both the shape and the pose MLP. An extra step would be required if our t-poses (`ROOT/datasets/cape/a_t_pose/000000/mesh_normalized.ply`) were not watertight. We'd need to run [multiview_to_watertight_mesh.py](npms/data_processing/multiview_to_watertight_mesh.py). Since CAPE is already watertight, we don't need to worry about this.
+At this point, we can generate training samples for both the shape and the pose MLP. An extra step would be required if our t-poses (`<ROOT>/datasets/cape/a_t_pose/000000/mesh_normalized.ply`) were not watertight. We'd need to run [multiview_to_watertight_mesh.py](npms/data_processing/multiview_to_watertight_mesh.py). Since CAPE is already watertight, we don't need to worry about this.
 
 ##### About `labels.json` and `labels_tpose.json`
 One last thing before actually generating the samples is to create some "labels" files that specify the paths to the dataset we wanna create. Under the folder [ZSPLITS_HUMAN](ZSPLITS_HUMAN) we have copied some examples.
 
 Within it, you can find other folders containing datasets in the form of the paths to the actual data. For example, [CAPE-SHAPE-TRAIN-35id](ZSPLITS_HUMAN/CAPE-SHAPE-TRAIN-35id), which in turn contains two files: [labels_tpose](ZSPLITS_HUMAN/CAPE-SHAPE-TRAIN-35id/labels_tpose.json) and [labels](ZSPLITS_HUMAN/CAPE-SHAPE-TRAIN-35id/labels.json). They define datasets in a flexible way, by means of a list of dictionaries, where each dictionary holds the paths to a particular sample. You'll get a feeling of why we have a `labels.json` and `labels_tpose.json` by running the following sections to generate data, as well as when you dive into actually training a new NPM from scratch.
 
-Go ahead and copy this [ZSPLITS_HUMAN](ZSPLITS_HUMAN) into `<ROOT>/datasets`, where `ROOT` is a path to your datasets that you can specify in [npms/configs_train/config_train_HUMAN.py](npms/configs_train/config_train_HUMAN.py). If you followed along until now, within `<ROOT>/datasets` you should already have the preprocessed `<ROOT>/datasets/cape` dataset.
+Go ahead and copy the folder [ZSPLITS_HUMAN](ZSPLITS_HUMAN) into `<ROOT>/datasets`, where `ROOT` is a path to your datasets that you can specify in [npms/configs_train/config_train_HUMAN.py](npms/configs_train/config_train_HUMAN.py). If you followed along until now, within `<ROOT>/datasets` you should already have the preprocessed `<ROOT>/datasets/cape` dataset.
 
 ```
 # Assuming you're in the root folder of the project
 cp -r ZSPLITS_HUMAN <ROOT>/datasets
 ```
 
-NOTE: within [data_scripts](npms/data_scripts) you can find helpful scripts to generate your own `labels.json` and `labels_tpose.json` from a dataset. Check out the [npms/data_scripts/README.md](npms/data_scripts/README.md) for a brief overview on these scripts.
+> Note: within [data_scripts](npms/data_scripts) you can find helpful scripts to generate your own `labels.json` and `labels_tpose.json` from a dataset. Check out the [npms/data_scripts/README.md](npms/data_scripts/README.md) for a brief overview on these scripts.
 
 
 ##### SDF samples
@@ -216,7 +214,7 @@ python train.py
 
 #### Pose Latent Space
 
-Set `only_shape=False` in [config_train_HUMAN.py](npms/configs_train/config_train_HUMAN.py). We now need to load the best checkpoint from training the shape MLP. For that, withing the same in [config_train_HUMAN.py](npms/configs_train/config_train_HUMAN.py), make sure `init_from = True` in its first appearance in the file, and then set this same variable to your pretrained model name:
+Set `only_shape=False` in [config_train_HUMAN.py](npms/configs_train/config_train_HUMAN.py). We now need to load the best checkpoint from training the shape MLP. For that, go to [config_train_HUMAN.py](npms/configs_train/config_train_HUMAN.py), make sure `init_from = True` in its first appearance in the file, and then set this same variable to your pretrained model name later in the file:
 
 ```
 init_from = "<model_name>"
@@ -236,19 +234,26 @@ You could:
 
 - interpolate between two shape codes, or between two pose codes ([Latent-space Interpolation](#latent-space-interpolation))
 
-- transfer poses from one identity to another ([]())
+- transfer poses from one identity to another ([Shape and Pose Transfer](#shape-and-pose-transfer))
 
 ## Fitting an NPM to a Monocular Depth Sequence
 
 #### Code Initialization
-When fitting an NPM to monocular depth sequence, it is recommended that we have a relatively good initialization of our shape and pose codes to avoid falling into local minima. To this end, we are gonna learn a shape and a pose encoder that map an input depth map to a shape and pose code, respectively. You basically have to train them like so: 
+When fitting an NPM to monocular depth sequence, it is recommended that we have a relatively good initialization of our shape and pose codes to avoid falling into local minima. To this end, we are gonna learn a shape and a pose encoder that map an input depth map to a shape and pose code, respectively. 
+
+We basically use the shape and pose codes that we've learned during training time as targets for training the shape and pose encoders. You can use [prepare_labels_shape_encoder.py](npms/data_scripts/prepare_labels_shape_encoder.py) and [prepare_labels_pose_encoder.py](npms/data_scripts/prepare_labels_pose_encoder.py) to generate the dataset labels for this encoder training.
+
+You basically have to train them like so: 
 
 ```
 python encode_shape_codes.py
 python encode_pose_codes.py
 ```
 
-We basically use the shape and pose codes that we've learned during training time as targets for training the shape and pose encoders. You can use [prepare_labels_shape_encoder.py](npms/data_scripts/prepare_labels_shape_encoder.py) and [prepare_labels_pose_encoder.py](npms/data_scripts/prepare_labels_pose_encoder.py) to generate the dataset labels for this encoder training.
+And regarding the data you need for training the encoder...
+
+**Data preparation**: Take a look at the scripts [voxelize_multiview.py](npms/data_processing/voxelize_multiview.py) to prepare the single-view voxel grids that we require to train our encoders.
+
 
 #### Test-time Optimization
 Now you can fit NPMs to an input monocular depth sequence:
@@ -263,6 +268,8 @@ You'll have to take a look at [config_eval_HUMAN.py](npms/configs_viz/config_eva
 
 It's definitely not the cleanest and easiest config file, sorry for that!
 
+**Data preparation**: Take a look at the scripts [compute_partial_sdf_grid.py](npms/data_processing/compute_partial_sdf_grid.py) to prepare the single-view SDF grid that we assume as input at test-time.
+
 #### Visualization
 
 With the following script you can visualize your fitting. Have a look at [config_viz_OURS.py](npms/configs_viz/config_viz_OURS.py) and set the name of your trained model (`exp_model`) as well as the name of your optimization run (`run_name`) of test-time fitting you just computed.
@@ -270,6 +277,8 @@ With the following script you can visualize your fitting. Have a look at [config
 ```
 python viz_all_methods.py -m NPM -d HUMAN
 ```
+
+There are a bunch of other scripts for visualization. They're definitely not cleaned-up, but I kept them here anyways in case they might be useful for you as a starting point.
 
 #### Compute metrics
 ```

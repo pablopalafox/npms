@@ -62,7 +62,7 @@ WORKDIR /app
 # Install requirements
 COPY docker_requirements.txt . 
 RUN pip install -r docker_requirements.txt
-RUN rm requirements.txt
+RUN rm docker_requirements.txt
 
 ############################################
 # Install dependencies in 'external'
@@ -71,13 +71,12 @@ RUN rm requirements.txt
 ADD external ./external
 
 # - Clone Eigen
-WORKDIR /app/external
-RUN git clone https://gitlab.com/libeigen/eigen.git
+# WORKDIR /app/external
+# RUN git clone https://gitlab.com/libeigen/eigen.git
 
-# - PyMarchingCubes (a fork of PyMCubes, by Justus Thies - 
-#   we have a local copy here because we changed some path in a header file)
-WORKDIR /app/external/PyMarchingCubes
-RUN python setup.py install
+# - Clone ChamferDistancePytorch
+# WORKDIR /app/external
+# RUN git clone https://github.com/ThibaultGROUEIX/ChamferDistancePytorch.git
 
 # - BUild gaps (Thomas Funkhouser)
 WORKDIR /app/external

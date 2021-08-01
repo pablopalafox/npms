@@ -149,7 +149,7 @@ run_train_iflownet.sh
 run_generate.sh
 run_generate_iflownet.sh
 
-external/eigen
+# external/eigen
 
 # pkl
 *.pkl

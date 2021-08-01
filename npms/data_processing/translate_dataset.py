@@ -118,7 +118,7 @@ if __name__ == '__main__':
     OVERWRITE = False
 
     parser = argparse.ArgumentParser(
-        description='Run boundary sampling'
+        description='Applying a translation to a dataset'
     )
     parser.add_argument('-t', '-max_threads', dest='max_threads', type=int, default=-1)
     args = parser.parse_args()
@@ -180,51 +180,19 @@ if __name__ == '__main__':
     #####################################################################
     # Characters
     #####################################################################
-    if False:
-        # dataset_name = "AUG_filtered_subsampled-train-20000ts"
-        # dataset_name = "AUG_filtered-train-175id-210585ts-1125seqs"
-        # dataset_name = "TEST-sophie-female_salsa_dancing-test-1id-90ts-1seqs"
-        # dataset_name = "TEST-sophie-female_salsa_dancing-test-1id-90ts-1seqs"
-        dataset_name = "MIXAMO-POSE-TEST-MOVING_FOR_TRANSLATION-2id-917ts-7seqs"
-        
-        from utils.parsing_utils import get_dataset_type_from_dataset_name
-        dataset_type = get_dataset_type_from_dataset_name(dataset_name)
-        splits_dir = f"{cfg.splits_dir}_{dataset_type}"
-        
-        labels_json       = os.path.join(ROOT_HDD, splits_dir, dataset_name, "labels.json")
-        labels_tpose_json = os.path.join(ROOT_HDD, splits_dir, dataset_name, "labels_tpose.json")
-        
-        with open(labels_json, "r") as f:
-            labels = json.loads(f.read())
 
-        with open(labels_tpose_json, "r") as f:
-            labels_tpose = json.loads(f.read())
+    dataset_name = "<DATASET NAME HERE>"
 
-        labels = labels + labels_tpose
-    else:
-        # dataset_name = "DFAUST-POSE-TEST-50021-chicken_wings-1id-17ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-knees-1id-664ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-one_leg_jump-1id-248ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-punching-1id-253ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-shake_arms-1id-273ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-shake_shoulders-1id-337ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-hips-1id-581ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-light_hopping_stiff-1id-216ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-one_leg_loose-1id-224ts-1seqs"
-        # dataset_name = "DFAUST-POSE-TEST-50021-running_on_spot-1id-226ts-1seqs"
-        dataset_name = "DFAUST-POSE-TEST-50021-shake_hips-1id-274ts-1seqs"
+    from utils.parsing_utils import get_dataset_type_from_dataset_name
+    dataset_type = get_dataset_type_from_dataset_name(dataset_name)
+    splits_dir = f"{cfg.splits_dir}_{dataset_type}"
+    
+    labels_json = os.path.join(ROOT_HDD, splits_dir, dataset_name, "labels.json")
+    
+    with open(labels_json, "r") as f:
+        labels = json.loads(f.read())
 
-
-        from utils.parsing_utils import get_dataset_type_from_dataset_name
-        dataset_type = get_dataset_type_from_dataset_name(dataset_name)
-        splits_dir = f"{cfg.splits_dir}_{dataset_type}"
-        
-        labels_json = os.path.join(ROOT_HDD, splits_dir, dataset_name, "labels.json")
-        
-        with open(labels_json, "r") as f:
-            labels = json.loads(f.read())
-
-        labels = labels
+    labels = labels
 
 
     path_to_samples = []

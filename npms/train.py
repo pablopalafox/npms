@@ -1,17 +1,9 @@
-import open3d as open3d
-
 import os
 import argparse
 import torch
-import numpy as np
-import json
-
 import datasets.sdf_dataset as sdf_dataset
 from models import training
-
 from data_scripts.compute_mapping import compute_train_to_augmented_mapping
-
-from utils.parsing_utils import str2bool, check_positive, check_non_negative
 import utils.utils as utils
 
 import config as cfg

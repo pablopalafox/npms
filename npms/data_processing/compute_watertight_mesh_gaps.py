@@ -107,7 +107,7 @@ if __name__ == '__main__':
     grid_script   = os.path.join(workspace_dir, "data_processing/process_mesh.sh")
 
     # ------------------------------------------------------------------------------------
-    dataset_name = "MIXAMO_TRANS_ALL-POSE-TRAIN-165id-subsampled-10065ts"
+    dataset_name = "CAPE-POSE-TRAIN-35id-subsampled-10119ts"
     # ------------------------------------------------------------------------------------
 
     # Mesh type used to generate the data

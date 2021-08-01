@@ -14,7 +14,7 @@ exp_dir       = f"{ROOT}/experiments"
 
 shape_network_specs = {
     "dims" : [512] * 8,
-    "dropout" : None, #[0, 1, 2, 3, 4, 5, 6, 7],
+    "dropout" : None,
     "dropout_prob" : 0.05,
     "norm_layers" : [0, 1, 2, 3, 4, 5, 6, 7],
     "latent_in" : [4],
@@ -27,7 +27,7 @@ shape_network_specs = {
 
 pose_network_specs = {
     "dims" : [1024] * 8,
-    "dropout" : None, #[0, 1, 2, 3, 4, 5, 6, 7],
+    "dropout" : None,
     "dropout_prob" : 0.2,
     "norm_layers" : [0, 1, 2, 3, 4, 5, 6, 7],
     "latent_in" : [4],
@@ -67,12 +67,12 @@ exp_version="npms"
 #############
 ### SHAPE ###
 #############
-shape_dataset_name = ""
+shape_dataset_name = "CAPE-SHAPE-TRAIN-35id"
 
 #############
 ### POSE ###
 #############
-pose_dataset_name = ""
+pose_dataset_name = "CAPE-POSE-TRAIN-35id-subsampled-10119ts"
 
 train_dataset_name = shape_dataset_name if only_shape else pose_dataset_name
 ############################################################################################
@@ -81,7 +81,7 @@ train_dataset_name = shape_dataset_name if only_shape else pose_dataset_name
 #####################################################################################################################
 #####################################################################################################################
 
-batch_size  = 8 if only_shape else 8
+batch_size  = 4 if only_shape else 2 # the higher, the better, of course
 num_workers = 10 if only_shape else 20
 
 ## SDF samples
@@ -163,8 +163,12 @@ if init_from:
     # By default, init_from_pose is set to False, but you can set it to a certain checkpoint if you want to start the Pose MLP from a checkpoint different than the Shape MLP
     init_from_pose = False
     
-    init_from = ""
-    checkpoint = 0
+    # This is where you specify your shape MLP checkpoint, to then train the Pose MLP
+    # init_from = "<SET YOUR CHECKPOINT NAME HERE>"
+    # checkpoint = 0 # And set the epoch of the checkpoint
+
+    init_from = "2021-08-01__NPMs__SHAPE_nss0.7_uni0.3__bs4__lr-0.0005-0.0005-0.001-0.001_intvl500__s384-512-8l__p384-1024-8l__woSE3__wShapePosEnc__wPosePosEnc__woDroutS__woDroutP__wWNormS__wWNormP__ON__CAPE-SHAPE-TRAIN-35id"
+    checkpoint = 0 # And set the epoch of the checkpoint
 
 else:
     continue_from = ""
@@ -213,10 +217,10 @@ shape_reg_lambda       = 1e-4
 pose_reg_lambda        = 1e-4
 
 lr_dict = {
-    "shape_decoder": 0.0005, #0.00025, #0.0005,    
-    "pose_decoder":  0.0005, #0.00025, #0.0005,    
-    "shape_codes":   0.001, #0.0005 , #0.001,    
-    "pose_codes":    0.001, #0.0005 , #0.001,    
+    "shape_decoder": 0.0005,
+    "pose_decoder":  0.0005,
+    "shape_codes":   0.001,
+    "pose_codes":    0.001,
 }
 
 learning_rate_schedules = {

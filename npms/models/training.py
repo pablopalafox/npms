@@ -1,17 +1,10 @@
 from __future__ import division
-import sys
-
-from numpy.lib.arraysetops import isin
 import torch
 import torch.optim as optim
-import torch.cuda as cutorch
-from torch.nn import functional as F
 import os
 from torch.utils.tensorboard import SummaryWriter
-from glob import glob
 import numpy as np
 from tqdm import tqdm
-from timeit import default_timer as timer
 import shutil
 from collections import OrderedDict
 
@@ -245,9 +238,6 @@ class Trainer():
         indices = batch.get('idx')
         identity_ids = batch.get('identity_id')
 
-        # path_ref = ref['path']
-        # path_cur = cur['path']
-
         #############################################################################
         # SDF points
         #############################################################################
@@ -266,7 +256,6 @@ class Trainer():
         p_flow_cur = cur['points_flow'].to(device) # [bs, N, 3]
 
         p_flow_ref_flat = p_flow_ref.reshape(-1, 3) # [bs*N, 3]
-        # p_flow_cur_flat = p_flow_cur.reshape(-1, 3) # [bs*N, 3]
         
         #############################################################################
         # Initialize losses
@@ -275,9 +264,6 @@ class Trainer():
         
         loss_ref_item  = 0.0
         loss_flow_item = 0.0
-
-        #############################################################################
-        #############################################################################
 
         ##########################################################################################
         ##########################################################################################
@@ -393,17 +379,14 @@ class Trainer():
         if self.do_code_regularization:
             
             if self.lambdas['ref'] > 0 and self.shape_codes.requires_grad:
-                # print("Shape code reg")
                 # Shape codes reg            
                 l2_shape_loss = deepsdf_utils.latent_size_regul(self.shape_codes, identity_ids.numpy())
                 l2_shape_reg = self.shape_reg_lambda * min(1, epoch / 100) * l2_shape_loss
                 loss += l2_shape_reg
 
             if self.lambdas['flow'] > 0.0 and self.pose_codes.requires_grad:
-                # print("Pose code reg")
                 # Pose codes reg            
-                # l2_pose_loss = deepsdf_utils.latent_size_regul(self.pose_codes, indices.numpy())
-                l2_pose_loss = deepsdf_utils.latent_size_regul_bis(pose_codes_batch)
+                l2_pose_loss = deepsdf_utils.latent_size_regul_no_index(pose_codes_batch)
                 l2_pose_reg = self.pose_reg_lambda * min(1, epoch / 100) * l2_pose_loss
                 loss += l2_pose_reg
 

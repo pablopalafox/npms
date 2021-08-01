@@ -27,7 +27,6 @@ import utils.render_utils as render_utils
 import utils.utils as utils
 from utils.image_proc import (
     backproject_depth, 
-    compute_validity_and_sign_mask_np, 
     compute_validity_and_sign_mask
 )
 import data_processing.implicit_waterproofing as iw
@@ -379,54 +378,7 @@ if __name__ == "__main__":
     ####################################
     # MIXAMO
     ####################################
-    # dataset_name = "TEST-sophie-female_salsa_dancing-test-1id-90ts-1seqs"
-    
-    ####################################
-    # MANO 
-    ####################################
-    # dataset_name = "MANO_EXTENDED-POSE-TEST-1id-50ts-50seqs"
-    # dataset_name = "MANO-POSE-TEST-5id-500ts-5seqs"
-
-    ####################################
-    # Real CAPE scans - selection 
-    ####################################
-    # dataset_name = "CAPE-POSE-TEST-00032_shortlong-hips-1id-293ts-1seqs"
-    # dataset_name = "CAPE-POSE-TEST-00032_shortshort-shoulders_mill-1id-207ts-1seqs"
-    # dataset_name = "CAPE-POSE-TEST-03223_shortlong-shoulders_mill-1id-378ts-1seqs"
-    # dataset_name = "CAPE-POSE-TEST-03223_shortshort-tilt_twist_left-1id-459ts-1seqs"
-
-    # dataset_name = "CAPE-POSE-TEST-00032_shortlong-tilt_twist_left-1id-100ts-1seqs-50to149"
-    # dataset_name = "CAPE-POSE-TEST-00032_shortlong-tilt_twist_left-1id-100ts-1seqs-170to269"
-    # dataset_name = "CAPE-POSE-TEST-03223_shortlong-tilt_twist_left-1id-100ts-1seqs-100to259"
-
-    ####################################
-    # MIXAMO
-    ####################################
-    # dataset_name = "MIXAMO_TRANS_ALL-POSE-TEST-alien-female_hip_hop_slide_step_dancing-1id-108ts-1seqs"
-    # dataset_name = "MIXAMO_TRANS_ALL-POSE-TEST-joe-breakdance_brooklyn_style_uprocking-1id-100ts-1seqs"
-    # dataset_name = "MIXAMO_TRANS_ALL-POSE-TEST-olivia-female_samba_ijexa_break-1id-300ts-1seqs"
-    # dataset_name = "MIXAMO-POSE-TEST-sophie-female_salsa_dancing-test-1id-90ts-1seqs"
-
-    # Slowed-down
-    dataset_name = "MIXAMO_TRANS_ALL-POSE-TEST-olivia-female_samba_ijexa_break_sx2-1id-260ts-1seqs"
-    # dataset_name = "MIXAMO_TRANS_ALL-POSE-TEST-alien-female_hip_hop_slide_step_dancing_sx8-1id-250ts-1seqs"
-    # dataset_name = "MIXAMO_TRANS_ALL-POSE-TEST-joe-breakdance_brooklyn_style_uprocking_sx8-1id-240ts-1seqs"
-    # dataset_name = "MIXAMO-POSE-TEST-sophie-female_salsa_dancing_sx3-1id-268ts-1seqs"
-
-    ####################################
-    # D-FAUST
-    ####################################
-    # dataset_name = "DFAUST-POSE-TEST-50021-chicken_wings-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-knees-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-one_leg_jump-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-punching-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-shake_arms-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-shake_shoulders-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-hips-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-light_hopping_stiff-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-one_leg_loose-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-running_on_spot-1id-17ts-1seqs"
-    # dataset_name = "DFAUST-POSE-TEST-50021-shake_hips-1id-17ts-1seqs"
+    dataset_name = "CAPE-POSE-TRAIN-35id-subsampled-10119ts"
 
     # Mesh type used to generate the data
     MESH_FILENAME = 'mesh_normalized.ply' # Select between 'mesh_normalized.ply' and 'mesh_real_scan.ply' (for CAPE)

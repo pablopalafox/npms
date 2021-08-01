@@ -1,9 +1,7 @@
 # conda env create -f npms_env.yml
 # conda env update -f npms_env.yml
 
-# export TORCH_CUDA_ARCH_LIST="6.1;7.5;8.6"
-
-name: npms
+name: npms_dev
 channels:
   - pytorch
   - pytorch3d
@@ -53,4 +51,5 @@ dependencies:
     - git+https://github.com/mmatl/pyopengl.git
     - smplx==0.1.24
     - chumpy
+    - ninja
 

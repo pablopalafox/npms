@@ -44,7 +44,7 @@ def get_dataset_type_from_dataset_name(dataset_name):
 
     print(dataset_name.upper())
 
-    raise Exception("Invalid dataset")
+    raise Exception(f"Invalid dataset '{dataset_name}'")
 
 def get_dataset_class_from_dataset_name(dataset_name):
     if "MANO" in dataset_name.upper():
@@ -65,4 +65,4 @@ def get_dataset_class_from_dataset_name(dataset_name):
     if "DFAUST" in dataset_name.upper():
         return "DFAUST"
 
-    raise Exception("Invalid dataset")
+    raise Exception(f"Invalid dataset '{dataset_name}'")

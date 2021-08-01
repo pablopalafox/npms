@@ -1,19 +1,9 @@
 import torch
-import torch.utils.data as data_utils
-import signal
-import sys
-import os
-import logging
-import math
 import numpy as np
-import json
-import time
 import open3d as o3d
 import trimesh
 
-from utils.sdf_utils import sample_grid_points, sample_scaled_grid_points
-import marching_cubes as mcubes
-# import mcubes
+import mcubes
 
 
 class SoftL1(torch.nn.Module):
@@ -58,7 +48,7 @@ def latent_size_regul(latent_codes, indices, component_mean=None, component_std=
     latent_loss = torch.mean(latent_loss)                       
     return latent_loss
 
-def latent_size_regul_bis(latent_codes):
+def latent_size_regul_no_index(latent_codes):
     # OneCodePerFrame
     latent_codes_squared = latent_codes.pow(2) # [batch_size, 1, code_dim]
     latent_loss = torch.mean(latent_codes_squared, dim=-1)   # [batch_size, 1]
@@ -100,147 +90,6 @@ def project_latent_codes_onto_sphere(latent_codes, radius):
 ####################################################################################
 ####################################################################################
 
-"""
-def create_mesh_ours_supersampling(
-    decoder, latent_code, identity_ids, shape_codes_dim, dim=256, n_edge_samples=0
-):
-    print("Super sampling")
-    latent_code.requires_grad = False
-
-    # Get shape codes for batch samples
-    shape_codes_batch = latent_code[identity_ids, ...] # [bs, 1, C]
-    assert shape_codes_batch.shape[1] == 1, shape_codes_batch.shape
-    
-    # start = timer()
-
-    for param in decoder.parameters():
-        param.requires_grad = False
-
-    assert not decoder.training
-
-    num_chunks = 32
-    
-    # if dim == 128:
-    #     num_chunks = 16
-    # elif dim == 256:
-    #     num_chunks = 128
-    #     n_edge_samples = 5
-    # elif dim == 512:
-    #     num_chunks = 128
-
-    # Extract the 0-isosurface with super res.
-    edges = dim - 1
-    supersamples = dim + edges * n_edge_samples
-
-    dims_x = [supersamples, dim, dim]
-    dims_y = [dim, supersamples, dim]
-    dims_z = [dim, dim, supersamples]
-
-    dims = [dims_x, dims_y, dims_z]
-
-    points_all = sample_scaled_grid_points(dims)
-
-    # We'll store the sdf here
-    sdf = []
-
-    for g, pts in enumerate(points_all):
-
-        points = torch.from_numpy(pts).permute(1, 0)
-        assert points.shape[1] == 3
-
-        num_points = points.shape[0]
-        assert num_points % num_chunks == 0, "The number of points in the grid must be divisible by the number of chunks"
-        points_per_chunk = int(num_points / num_chunks)
-
-        # print(points.shape)
-
-        sdf_pred = np.empty((num_points), dtype=np.float32)
-        
-        for i in range(num_chunks):
-            points_i = points[i*points_per_chunk:(i+1)*points_per_chunk, :].cuda()
-            points_i.requires_grad = False
-
-            num_points_i = points_i.shape[0]
-
-            # Run forward pass.
-            # Extent latent code to all sampled points
-            shape_codes_repeat = shape_codes_batch.expand(-1, num_points_i, -1) # [bs, N, C]
-            shape_codes_inputs = shape_codes_repeat.reshape(-1, shape_codes_dim) # [bs*N, C]
-
-            shape_inputs = torch.cat([shape_codes_inputs, points_i], 1)
-
-            sdf_pred_i = decoder(shape_inputs).squeeze(1).detach().cpu().numpy()
-
-            # Concatenate
-            sdf_pred[..., i*points_per_chunk:(i+1)*points_per_chunk] = sdf_pred_i
-
-        sdf_pred = sdf_pred.reshape(dims[g][0], dims[g][1], dims[g][2])
-
-        sdf.append(sdf_pred)
-
-    vertices, triangles = mcubes.marching_cubes_super_sampling(sdf[0], sdf[1], sdf[2], 0)
-
-    vertices = 1.0 * (vertices / (dim - 1)) - 0.5
-
-    return trimesh.Trimesh(vertices, triangles)
-
-
-def create_mesh_ours(decoder, latent_code, identity_ids, shape_codes_dim, dim=512, num_chunks=128):
-
-    latent_code.requires_grad = False
-
-    # Get shape codes for batch samples
-    shape_codes_batch = latent_code[identity_ids, ...] # [bs, 1, C]
-    assert shape_codes_batch.shape[1] == 1, shape_codes_batch.shape
-    
-    # start = timer()
-
-    for param in decoder.parameters():
-        param.requires_grad = False
-
-    assert not decoder.training
-
-    # Sample grid points
-    points = np.moveaxis(sample_grid_points(dim), 0, 1)
-    # visualize_grid([points], colors=None, exit_after=True)
-    points = torch.from_numpy(points)#.cuda() # Move to device
-
-    num_points = points.shape[0]
-    assert num_points % num_chunks == 0, "The number of points in the grid must be divisible by the number of chunks"
-    points_per_chunk = int(num_points / num_chunks)
-
-    sdf_pred = np.empty((num_points), dtype=np.float32)
-    for i in range(num_chunks):
-        points_i = points.clone()[i*points_per_chunk:(i+1)*points_per_chunk, :].cuda()
-
-        num_points_i = points_i.shape[0]
-
-        # Run forward pass.
-        # Extent latent code to all sampled points
-        shape_codes_repeat = shape_codes_batch.expand(-1, num_points_i, -1) # [bs, N, C]
-        shape_codes_inputs = shape_codes_repeat.reshape(-1, shape_codes_dim) # [bs*N, C]
-
-        shape_inputs = torch.cat([shape_codes_inputs, points_i], 1)
-
-        # print(shape_inputs.shape)
-
-        sdf_pred_i = decoder(shape_inputs).squeeze(1).detach().cpu().numpy()
-        # sdf_pred_i = decode_sdf(decoder, latent_code, points_i).squeeze(1).detach().cpu().numpy()
-
-        # Concatenate
-        sdf_pred[..., i*points_per_chunk:(i+1)*points_per_chunk] = sdf_pred_i
-
-    sdf_pred = sdf_pred.reshape(dim, dim, dim)
-
-    # Extract mesh with Marching cubes.
-    vertices, triangles = mcubes.marching_cubes(sdf_pred, 0)
-
-    # Normalize vertices to be in [-1, 1]
-    # vertices = 2.0 * (vertices / (dim - 1)) - 1.0
-    vertices = 1.0 * (vertices / (dim - 1)) - 0.5
-
-    return trimesh.Trimesh(vertices, triangles)
-"""
 
 def create_mesh_from_code(decoder, latent_code, shape_codes_dim, N=256, max_batch=32 ** 3):
     latent_code.requires_grad = False

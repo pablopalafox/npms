@@ -86,9 +86,9 @@ if __name__ == '__main__':
     sample_num = 100000
 
     # ----------------------------------------------------------------- #
-    datasets_name = "datasets_mix"
+    datasets_name = "datasets"
     # ----------------------------------------------------------------- #
-    dataset = "amass" # "mixamo_trans_all" # "amass"
+    dataset = "cape"
     # ----------------------------------------------------------------- #
 
     print("DATASET:", dataset)
