@@ -134,11 +134,9 @@ dmypy.json
 .vscode
 
 *.pyc
-*.c
 
 /experiments/*
 /shapenet/data/*
-*.cpp
 !*/csrc/*.cpp
 !*/csrc/cpu/*.cpp
 /trash/
