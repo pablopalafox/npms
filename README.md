@@ -78,9 +78,9 @@ git clone https://github.com/ThibaultGROUEIX/ChamferDistancePytorch.git
 cd ..
 ``` -->
 
-- Compile the [csrc]('csrc') folder: 
+- Compile the [csrc](external/csrc) folder: 
 ```
-cd csrc 
+cd external/csrc 
 python setup.py install
 cd ..
 ```
