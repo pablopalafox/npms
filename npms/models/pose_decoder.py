@@ -234,7 +234,7 @@ class PoseDecoderSE3(nn.Module):
         v, s, t = x[:, :3], x[:, 3:-3], x[:, -3:]
 
         # Convert log-quaternion to unit quaternion
-        q = kornia.quaternion_log_to_exp(v)
+        q = kornia.geometry.quaternion_log_to_exp(v)
 
         # Points centered around pivot points s
         xyz_pivot = xyz - s
