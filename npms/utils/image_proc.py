@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 
 from NPMs._C import backproject_depth_ushort as backproject_depth_ushort_c
 from NPMs._C import backproject_depth_float as backproject_depth_float_c
